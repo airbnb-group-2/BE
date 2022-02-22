@@ -1,0 +1,190 @@
+openapi: "3.0.2"
+info:
+  title: Proyek Aplikasi AirBNB - Grup 2
+  description: Dokumentasi API AirBNB - Grup 2
+  contact:
+    name: BE - Grup 2
+    email: yusufnurwahid.contact@gmail.com
+  version: "1.0.0"
+servers:
+  - url: http://3.1.211.120:8081/
+tags:
+  - name: Auth
+    description: Autorisasi users
+  - name: Users
+    description: Daftar users
+paths:
+  /login:
+    post:
+      tags:
+        - Auth
+      summary: Login user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                  format: password
+              example:
+                email: ucup@ucup.com
+                password: ucup123
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                      token:
+                        type: string
+              example:
+                code: 200
+                message: berhasil masuk, mendapatkan token baru
+                data:
+                  email: ucup@ucup.com
+                  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 400
+                message: input dari user tidak sesuai, email atau password tidak boleh kosong
+                data: null
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: email atau password tidak valid
+                data: null
+  /users:
+    post:
+      summary: Tambahkan user baru
+      tags:
+        - Users
+      requestBody:
+        required: true
+        description: Menambah user baru dengan input yang sesuai
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                  format: password
+                is_renter:
+                  type: boolean
+              example:
+                name: Ucup
+                email: ucup@ucup.com
+                password: frans123
+                is_renter: false
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      is_renter:
+                        type: boolean
+                example:
+                  code: 201
+                  message: sukses menambahkan user baru
+                  data:
+                    name: Frans Ihsan
+                    email: frans@frans.com
+                    is_renter: false
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 400
+                message: input dari user tidak sesuai, nama, email atau password tidak boleh kosong
+                data: null
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: terjadi error di dalam server, gagal membuat user baru
+                data: null
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

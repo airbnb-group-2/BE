@@ -72,6 +72,6 @@ func (ctl *UserController) DeleteByID() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
-		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses update user", err))
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses menghapus user", err))
 	}
 }

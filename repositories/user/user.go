@@ -5,6 +5,7 @@ import (
 	U "group-project2/entities/user"
 	"group-project2/repositories/hash"
 
+	"github.com/labstack/gommon/log"
 	"gorm.io/gorm"
 )
 
@@ -21,6 +22,7 @@ func New(db *gorm.DB) *UserRepository {
 func (repo *UserRepository) Insert(NewUser U.Users) (U.Users, error) {
 	NewUser.Password, _ = hash.HashPassword(NewUser.Password)
 	if err := repo.db.Create(&NewUser).Error; err != nil {
+		log.Warn(err)
 		return U.Users{}, err
 	}
 	return NewUser, nil
@@ -29,6 +31,7 @@ func (repo *UserRepository) Insert(NewUser U.Users) (U.Users, error) {
 func (repo *UserRepository) GetUserByID(UserID uint) (U.Users, error) {
 	User := U.Users{}
 	if err := repo.db.First(&User, UserID).Error; err != nil {
+		log.Warn(err)
 		return User, err
 	}
 	return User, nil

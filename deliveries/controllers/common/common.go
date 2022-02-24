@@ -24,10 +24,10 @@ func BadRequest(message string) Response {
 	}
 }
 
-func UnAuthorized() Response {
+func UnAuthorized(message string) Response {
 	return Response{
 		Code:    http.StatusUnauthorized,
-		Message: "client tidak terautorisasi",
+		Message: message,
 		Data:    nil,
 	}
 }

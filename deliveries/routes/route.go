@@ -23,6 +23,7 @@ func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserControlle
 	ur.POST("", uc.Insert())
 	ur.GET("", uc.GetUserByID(), middlewares.JWTMiddleware())
 	ur.PUT("", uc.Update(), middlewares.JWTMiddleware())
+	ur.PUT("/setrenter", uc.SetRenter(), middlewares.JWTMiddleware())
 	ur.DELETE("", uc.DeleteByID(), middlewares.JWTMiddleware())
 
 }

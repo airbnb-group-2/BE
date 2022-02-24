@@ -28,7 +28,7 @@ func (repo *RoomRepository) Insert(NewRoom R.Rooms) (R.Rooms, error) {
 	return NewRoom, nil
 }
 
-func (repo *RoomRepository) Get() ([]R.Rooms, error) {
+func (repo *RoomRepository) GetAllRooms() ([]R.Rooms, error) {
 	Rooms := []R.Rooms{}
 	if RowsAffected := repo.db.Find(&Rooms).RowsAffected; RowsAffected == 0 {
 		return []R.Rooms{}, errors.New("belum ada room yang terdaftar")
@@ -43,6 +43,14 @@ func (repo *RoomRepository) GetRoomByID(RoomID uint) (R.Rooms, error) {
 		return R.Rooms{}, err
 	}
 	return Room, nil
+}
+
+func (repo *RoomRepository) GetRoomsByUserID(UserID uint) ([]R.Rooms, error) {
+	Rooms := []R.Rooms{}
+	if RowsAffected := repo.db.Table("rooms").Where("user_id = ?", UserID).Find(&Rooms).RowsAffected; RowsAffected == 0 {
+		return nil, errors.New("tidak terdapat room dari user tersebut")
+	}
+	return Rooms, nil
 }
 
 func (repo *RoomRepository) GetRoomsByCity(City string) ([]R.Rooms, error) {
@@ -61,8 +69,8 @@ func (repo *RoomRepository) Update(RoomUpdate R.Rooms) (R.Rooms, error) {
 	return RoomUpdate, nil
 }
 
-func (repo *RoomRepository) Delete(RoomID uint) error {
-	if RowsAffected := repo.db.Delete(&R.Rooms{}, RoomID).RowsAffected; RowsAffected == 0 {
+func (repo *RoomRepository) Delete(UserID, RoomID uint) error {
+	if RowsAffected := repo.db.Table("room").Where("user_id = ? AND room_id = ?", UserID, RoomID).Delete(&R.Rooms{}, RoomID).RowsAffected; RowsAffected == 0 {
 		return errors.New("tidak ada room yang dihapus")
 	}
 	return nil

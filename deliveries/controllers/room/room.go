@@ -3,7 +3,6 @@ package room
 import (
 	"group-project2/deliveries/controllers/common"
 	"group-project2/deliveries/middlewares"
-	R "group-project2/entities/room"
 	_RoomRepo "group-project2/repositories/room"
 	"net/http"
 	"strconv"
@@ -30,7 +29,7 @@ func (ctl *RoomController) Insert() echo.HandlerFunc {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("client tidak terautorisasi, hanya renter yang diizinkan untuk menambahkan room"))
 		}
 
-		NewRoom := RequestRoom{}
+		NewRoom := RequestCreateRoom{}
 		if err := c.Bind(&NewRoom); err != nil || strings.TrimSpace(NewRoom.Name) == "" {
 			return c.JSON(http.StatusBadRequest, common.BadRequest("input dari client tidak sesuai, nama tidak boleh kosong"))
 		}
@@ -91,9 +90,9 @@ func (ctl *RoomController) GetRoomsByCity() echo.HandlerFunc {
 
 func (ctl *RoomController) Update() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		UserID := middlewares.ExtractTokenUserID(c)
+		RoomID, _ := strconv.Atoi(c.Param("id"))
 		IsRenter := middlewares.ExtractTokenIsRenter(c)
-		RoomUpdate := R.Rooms{}
+		RoomUpdate := RequestUpdate{}
 
 		if !IsRenter {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("client tidak terautorisasi, hanya renter yang diizinkan untuk mengupdate room"))
@@ -102,9 +101,8 @@ func (ctl *RoomController) Update() echo.HandlerFunc {
 		if err := c.Bind(&RoomUpdate); err != nil {
 			return c.JSON(http.StatusBadRequest, common.BadRequest("input dari client tidak sesuai"))
 		}
-		RoomUpdate.UserID = uint(UserID)
 
-		res, err := ctl.repo.Update(RoomUpdate)
+		res, err := ctl.repo.Update(RoomUpdate.ToEntityRoom(uint(RoomID)))
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}

@@ -1,8 +1,12 @@
 package room
 
-import R "group-project2/entities/room"
+import (
+	R "group-project2/entities/room"
 
-type RequestRoom struct {
+	"gorm.io/gorm"
+)
+
+type RequestCreateRoom struct {
 	Name        string `json:"name" form:"name"`
 	Description string `json:"description" form:"description"`
 	Guest       uint   `json:"guest" form:"guest"`
@@ -17,7 +21,7 @@ type RequestRoom struct {
 	Price       uint   `json:"price" form:"price"`
 }
 
-func (Req RequestRoom) ToEntityRoom(UserID uint) R.Rooms {
+func (Req RequestCreateRoom) ToEntityRoom(UserID uint) R.Rooms {
 	return R.Rooms{
 		Name:        Req.Name,
 		Description: Req.Description,
@@ -172,6 +176,39 @@ func ToResponseGetRoomsByCity(Rooms []R.Rooms) []ResponseGetRoom {
 	}
 
 	return Responses
+}
+
+type RequestUpdate struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Guest       uint   `json:"guest"`
+	Bedroom     uint   `json:"bedroom"`
+	HasWifi     bool   `json:"has_wifi"`
+	HasAc       bool   `json:"has_ac"`
+	HasKitchen  bool   `json:"has_kitchen"`
+	HasFp       bool   `json:"has_fp"`
+	Longitude   string `json:"longitude"`
+	Latitude    string `json:"latitude"`
+	City        string `json:"city"`
+	Price       uint   `json:"price"`
+}
+
+func (Req RequestUpdate) ToEntityRoom(RoomID uint) R.Rooms {
+	return R.Rooms{
+		Model:       gorm.Model{ID: RoomID},
+		Name:        Req.Name,
+		Description: Req.Description,
+		Guest:       Req.Guest,
+		Bedroom:     Req.Bedroom,
+		HasWifi:     Req.HasWifi,
+		HasAc:       Req.HasAc,
+		HasKitchen:  Req.HasKitchen,
+		HasFp:       Req.HasFp,
+		Longitude:   Req.Longitude,
+		Latitude:    Req.Latitude,
+		City:        Req.City,
+		Price:       Req.Price,
+	}
 }
 
 type ResponseUpdate struct {

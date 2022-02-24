@@ -20,7 +20,6 @@ type Rooms struct {
 	Latitude    string         `gorm:"type:varchar(255)"`
 	City        string         `gorm:"type:varchar(100)"`
 	Price       uint           `gorm:"default:1"`
-	IsAvailable bool           `gorm:"type:boolean"`
 	Images      []image.Images `gorm:"foreignKey:RoomID"`
 	UserID      uint
 }

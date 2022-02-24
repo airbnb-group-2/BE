@@ -50,6 +50,16 @@ func (repo *UserRepository) Update(UpdatedUser U.Users) (U.Users, error) {
 	return UpdatedUser, nil
 }
 
+func (repo *UserRepository) SetRenter(UserID uint) (U.Users, error) {
+	User := U.Users{}
+	res := repo.db.Model(&User).Update("is_renter", true)
+	if res.RowsAffected == 0 {
+		return U.Users{}, errors.New("gagal menjadikan renter")
+	}
+	repo.db.First(&User, UserID)
+	return User, nil
+}
+
 func (repo *UserRepository) DeleteByID(UserID uint) error {
 	if RowsAffected := repo.db.Delete(&U.Users{}, UserID).RowsAffected; RowsAffected == 0 {
 		return errors.New("tidak ada user yang dihapus")

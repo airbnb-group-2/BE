@@ -27,11 +27,11 @@ func (repo *ImageRepository) Insert(NewImage I.Images) (I.Images, error) {
 }
 
 func (repo *ImageRepository) GetImagesByRoomID(RoomID uint) ([]I.Images, error) {
-	Rooms := []I.Images{}
-	if RowsAffected := repo.db.Where("room_id = ?", RoomID).Find(&Rooms).RowsAffected; RowsAffected == 0 {
+	Images := []I.Images{}
+	if RowsAffected := repo.db.Where("room_id = ?", RoomID).Find(&Images).RowsAffected; RowsAffected == 0 {
 		return nil, errors.New("belum ada gambar yang tersimpan")
 	}
-	return Rooms, nil
+	return Images, nil
 }
 
 func (repo *ImageRepository) GetImageByID(ImageID uint) (I.Images, error) {

@@ -64,6 +64,18 @@ func (ctl *UserController) Update() echo.HandlerFunc {
 	}
 }
 
+func (ctl *UserController) SetRenter() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		UserID := middlewares.ExtractTokenUserID(c)
+
+		res, err := ctl.repo.SetRenter((uint(UserID)))
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+		}
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses menjadikan renter", ToResponseUpdate(res)))
+	}
+}
+
 func (ctl *UserController) DeleteByID() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		UserID := middlewares.ExtractTokenUserID(c)

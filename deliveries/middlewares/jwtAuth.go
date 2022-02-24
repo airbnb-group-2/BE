@@ -31,3 +31,13 @@ func ExtractTokenUserID(e echo.Context) int {
 	}
 	return 0
 }
+
+func ExtractTokenIsRenter(e echo.Context) bool {
+	user := e.Get("user").(*jwt.Token)
+	if user.Valid {
+		data := user.Claims.(jwt.MapClaims)
+		isRenter := data["isRenter"].(bool)
+		return isRenter
+	}
+	return false
+}

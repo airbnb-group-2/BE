@@ -3,6 +3,7 @@ package routes
 import (
 	"group-project2/deliveries/controllers/auth"
 	"group-project2/deliveries/controllers/image"
+	"group-project2/deliveries/controllers/rating"
 	"group-project2/deliveries/controllers/room"
 	"group-project2/deliveries/controllers/user"
 	"group-project2/deliveries/middlewares"
@@ -11,43 +12,49 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserController, rc *room.RoomController, ic *image.ImageController) {
+func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserController, rc *room.RoomController, ic *image.ImageController, rtc *rating.RatingController) {
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.CORS())
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "method=${method}, uri=${uri}, status=${status}",
 	}))
 
-	ar := e.Group("/login")
-	ar.POST("", ac.Login())
+	a := e.Group("/login")
+	a.POST("", ac.Login())
 
-	ur := e.Group("/users")
-	ur.POST("", uc.Insert())
-	urj := ur.Group("/jwt")
-	urj.Use(middlewares.JWTMiddleware())
-	urj.GET("", uc.GetUserByID())
-	urj.PUT("", uc.Update())
-	urj.PUT("/setrenter", uc.SetRenter())
-	urj.DELETE("", uc.DeleteByID())
+	u := e.Group("/users")
+	u.POST("", uc.Insert())
+	uj := u.Group("/jwt")
+	uj.Use(middlewares.JWTMiddleware())
+	uj.GET("", uc.GetUserByID())
+	uj.PUT("", uc.Update())
+	uj.PUT("/setrenter", uc.SetRenter())
+	uj.DELETE("", uc.DeleteByID())
 
-	rr := e.Group("/rooms")
-	rr.GET("", rc.GetAllRooms())
-	rr.GET("/:id", rc.GetRoomByID())
-	rr.GET("", rc.GetRoomsByUserID())
-	rr.GET("", rc.GetRoomsByCity())
-	rrj := rr.Group("/jwt")
-	rrj.Use(middlewares.JWTMiddleware())
-	rrj.POST("", rc.Insert())
-	rrj.PUT("/:id", rc.Update())
-	rrj.DELETE("/:id", rc.Delete())
+	r := e.Group("/rooms")
+	r.GET("", rc.GetAllRooms())
+	r.GET("/:id", rc.GetRoomByID())
+	r.GET("", rc.GetRoomsByUserID())
+	r.GET("", rc.GetRoomsByCity())
+	rj := r.Group("/jwt")
+	rj.Use(middlewares.JWTMiddleware())
+	rj.POST("", rc.Insert())
+	rj.PUT("/:id", rc.Update())
+	rj.DELETE("/:id", rc.Delete())
 
-	ir := e.Group("/images")
-	ir.GET("", ic.GetImagesByRoomID())
-	ir.GET("/:id", ic.GetImageByID())
-	irj := ir.Group("/jwt")
-	irj.Use(middlewares.JWTMiddleware())
-	irj.POST("", ic.Insert())
-	irj.PUT("", ic.Update())
-	irj.DELETE("/:id", ic.DeleteImageByID())
-	irj.DELETE("", ic.DeleteImageByRoomID())
+	i := e.Group("/images")
+	i.GET("", ic.GetImagesByRoomID())
+	i.GET("/:id", ic.GetImageByID())
+	ij := i.Group("/jwt")
+	ij.Use(middlewares.JWTMiddleware())
+	ij.POST("", ic.Insert())
+	ij.PUT("", ic.Update())
+	ij.DELETE("/:id", ic.DeleteImageByID())
+	ij.DELETE("", ic.DeleteImageByRoomID())
+
+	rt := e.Group("/ratings")
+	rt.GET("", rtc.GetRatingsByRoomID())
+	rtj := rt.Group("/jwt")
+	rtj.Use(middlewares.JWTMiddleware())
+	rtj.POST("", rtc.Insert())
 }

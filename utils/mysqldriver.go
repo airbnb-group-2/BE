@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"group-project2/configs"
 	I "group-project2/entities/image"
+	Rat "group-project2/entities/rating"
 	R "group-project2/entities/room"
 	U "group-project2/entities/user"
 
@@ -34,4 +35,5 @@ func InitMigrate(db *gorm.DB) {
 	db.AutoMigrate(&U.Users{})
 	db.AutoMigrate(&R.Rooms{})
 	db.AutoMigrate(&I.Images{})
+	db.AutoMigrate(&Rat.Ratings{})
 }

@@ -5,11 +5,13 @@ import (
 	"group-project2/configs"
 	_AuthController "group-project2/deliveries/controllers/auth"
 	_ImageController "group-project2/deliveries/controllers/image"
+	_RatingController "group-project2/deliveries/controllers/rating"
 	_RoomController "group-project2/deliveries/controllers/room"
 	_UserController "group-project2/deliveries/controllers/user"
 	"group-project2/deliveries/routes"
 	_AuthRepo "group-project2/repositories/auth"
 	_ImageRepo "group-project2/repositories/image"
+	_RatingRepo "group-project2/repositories/rating"
 	_RoomRepo "group-project2/repositories/room"
 	_UserRepo "group-project2/repositories/user"
 	"group-project2/utils"
@@ -26,15 +28,17 @@ func main() {
 	userRepo := _UserRepo.New(db)
 	roomRepo := _RoomRepo.New(db)
 	imageRepo := _ImageRepo.New(db)
+	ratingRepo := _RatingRepo.New(db)
 
 	ac := _AuthController.New(authRepo)
 	uc := _UserController.New(userRepo)
 	rc := _RoomController.New(roomRepo)
 	ic := _ImageController.New(imageRepo)
+	rtc := _RatingController.New(ratingRepo)
 
 	e := echo.New()
 
-	routes.RegisterPaths(e, ac, uc, rc, ic)
+	routes.RegisterPaths(e, ac, uc, rc, ic, rtc)
 
 	log.Fatal(e.Start(fmt.Sprintf(":%d", config.Port)))
 }

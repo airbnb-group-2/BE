@@ -43,7 +43,7 @@ func (ctl *ImageController) Insert() echo.HandlerFunc {
 
 func (ctl *ImageController) GetImagesByRoomID() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		RoomID, _ := strconv.Atoi(c.QueryParam("room-id"))
+		RoomID, _ := strconv.Atoi(c.QueryParam("room_id"))
 
 		res, err := ctl.repo.GetImagesByRoomID(uint(RoomID))
 		if err != nil {
@@ -104,7 +104,7 @@ func (ctl *ImageController) DeleteImageByID() echo.HandlerFunc {
 
 func (ctl *ImageController) DeleteImageByRoomID() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		RoomID, _ := strconv.Atoi(c.QueryParam("id"))
+		RoomID, _ := strconv.Atoi(c.QueryParam("room_id"))
 		IsRenter := middlewares.ExtractTokenIsRenter(c)
 		if !IsRenter {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("client tidak terautorisasi, hanya renter yang diizinkan untuk menambahkan gambar"))

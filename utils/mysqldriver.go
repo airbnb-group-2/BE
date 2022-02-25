@@ -3,9 +3,11 @@ package utils
 import (
 	"fmt"
 	"group-project2/configs"
+	I "group-project2/entities/image"
+	R "group-project2/entities/room"
 	U "group-project2/entities/user"
-	"log"
 
+	"github.com/labstack/gommon/log"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -30,4 +32,6 @@ func InitDB(config *configs.AppConfig) *gorm.DB {
 
 func InitMigrate(db *gorm.DB) {
 	db.AutoMigrate(&U.Users{})
+	db.AutoMigrate(&R.Rooms{})
+	db.AutoMigrate(&I.Images{})
 }

@@ -33,11 +33,11 @@ func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserControlle
 	rr := e.Group("/rooms")
 	rr.GET("", rc.GetAllRooms())
 	rr.GET("/:id", rc.GetRoomByID())
+	rr.GET("", rc.GetRoomsByUserID())
 	rr.GET("", rc.GetRoomsByCity())
 	rrj := rr.Group("/jwt")
 	rrj.Use(middlewares.JWTMiddleware())
 	rrj.POST("", rc.Insert())
-	rrj.GET("", rc.GetRoomsByUserID())
 	rrj.PUT("/:id", rc.Update())
 	rrj.DELETE("/:id", rc.Delete())
 

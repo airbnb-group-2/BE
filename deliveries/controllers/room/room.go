@@ -66,7 +66,7 @@ func (ctl *RoomController) GetRoomByID() echo.HandlerFunc {
 
 func (ctl *RoomController) GetRoomsByUserID() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		UserID := middlewares.ExtractTokenUserID(c)
+		UserID, _ := strconv.Atoi(c.QueryParam("user_id"))
 
 		res, err := ctl.repo.GetRoomsByUserID(uint(UserID))
 		if err != nil {

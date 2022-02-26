@@ -52,7 +52,7 @@ func (repo *UserRepository) Update(UpdatedUser U.Users) (U.Users, error) {
 
 func (repo *UserRepository) SetRenter(UserID uint) (U.Users, error) {
 	User := U.Users{}
-	res := repo.db.Model(&User).Where("user_id = ?", UserID).Update("is_renter", true)
+	res := repo.db.Model(&User).Where("id = ?", UserID).Update("is_renter", true)
 	if res.RowsAffected == 0 {
 		return U.Users{}, errors.New("gagal menjadikan renter")
 	}

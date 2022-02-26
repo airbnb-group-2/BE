@@ -1,24 +1,58 @@
 package image
 
 import (
+	"errors"
+	"fmt"
+	"group-project2/configs"
 	"group-project2/deliveries/controllers/common"
 	"group-project2/deliveries/middlewares"
 	_ImageRepo "group-project2/repositories/image"
+	awss3 "group-project2/services/aws-s3"
 	"net/http"
 	"strconv"
 	"strings"
 
+	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/gommon/log"
 )
 
 type ImageController struct {
-	repo _ImageRepo.Image
+	repo    _ImageRepo.Image
+	awsConf *configs.AppConfig
+	awsSess *session.Session
 }
 
-func New(repository _ImageRepo.Image) *ImageController {
+func New(repository _ImageRepo.Image, config *configs.AppConfig, aws *session.Session) *ImageController {
 	return &ImageController{
-		repo: repository,
+		repo:    repository,
+		awsConf: config,
+		awsSess: aws,
 	}
+}
+
+func Upload(ctl *ImageController, c echo.Context) (string, error) {
+	imageUpload := RequestImage{}
+	if err := c.Bind(&imageUpload); err != nil || imageUpload.RoomID == 0 {
+		log.Info(errors.New("input dari client tidak sesuai, room_id tidak boleh kosong"))
+		return "", err
+	}
+
+	file, err := c.FormFile("file")
+	if err != nil {
+		log.Info(err)
+		return "", err
+	}
+
+	file.Filename = fmt.Sprintf("room%s-%s", strconv.Itoa(int(imageUpload.RoomID)), file.Filename)
+
+	link, err := awss3.DoUpload(ctl.awsSess, *file, ctl.awsConf.S3_REGION)
+	if err != nil {
+		log.Info(err)
+		return "", err
+	}
+
+	return link, nil
 }
 
 func (ctl *ImageController) Insert() echo.HandlerFunc {
@@ -29,9 +63,15 @@ func (ctl *ImageController) Insert() echo.HandlerFunc {
 		}
 
 		NewImage := RequestImage{}
-		if err := c.Bind(&NewImage); err != nil || strings.TrimSpace(NewImage.Link) == "" || NewImage.RoomID == 0 {
-			return c.JSON(http.StatusBadRequest, common.BadRequest("input dari client tidak sesuai, link atau room_id tidak boleh kosong"))
+		if err := c.Bind(&NewImage); err != nil || NewImage.RoomID == 0 {
+			return c.JSON(http.StatusBadRequest, common.BadRequest("input dari client tidak sesuai, room_id tidak boleh kosong"))
 		}
+
+		link, err := Upload(ctl, c)
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, common.BadRequest("gagal mengunggah gambar"))
+		}
+		NewImage.Link = link
 
 		res, err := ctl.repo.Insert(NewImage.ToEntityImage())
 		if err != nil {

@@ -54,7 +54,5 @@ func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserControlle
 
 	rt := e.Group("/ratings")
 	rt.GET("", rtc.GetRatingsByRoomID())
-	rtj := rt.Group("/jwt")
-	rtj.Use(middlewares.JWTMiddleware())
-	rtj.POST("", rtc.Insert())
+	rt.POST("", rtc.Insert(), middlewares.JWTMiddleware())
 }

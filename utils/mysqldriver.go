@@ -15,11 +15,11 @@ import (
 
 func InitDB(config *configs.AppConfig) *gorm.DB {
 	connectionString := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?charset=utf8&parseTime=True&loc=Local",
-		config.Username,
-		config.Password,
-		config.Address,
-		config.DB_Port,
-		config.Name,
+		config.DB_USERNAME,
+		config.DB_PASSWORD,
+		config.DB_HOST,
+		config.DB_PORT,
+		config.DB_NAME,
 	)
 
 	db, err := gorm.Open(mysql.Open(connectionString), &gorm.Config{})

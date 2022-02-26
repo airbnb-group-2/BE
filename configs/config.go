@@ -42,8 +42,8 @@ func initConfig() *AppConfig {
 
 	defaultAppConfig := AppConfig{
 		PORT:        8000,
-		DB_DRIVER:   "mysql",
-		DB_NAME:     "test",
+		DB_DRIVER:   "",
+		DB_NAME:     "",
 		DB_PORT:     3306,
 		DB_HOST:     "localhost",
 		DB_USERNAME: "",
@@ -66,7 +66,7 @@ func getEnv(appConfig *AppConfig) {
 		log.Warn(err)
 	}
 
-	db_port, err := strconv.Atoi(os.Getenv("PORT"))
+	db_port, err := strconv.Atoi(os.Getenv("DB_PORT"))
 	if err != nil {
 		log.Warn(err)
 	}

@@ -45,7 +45,7 @@ func initConfig() *AppConfig {
 		DB_DRIVER:   "",
 		DB_NAME:     "",
 		DB_PORT:     3306,
-		DB_HOST:     "localhost",
+		DB_HOST:     "",
 		DB_USERNAME: "",
 		DB_PASSWORD: "",
 		S3_REGION:   "",

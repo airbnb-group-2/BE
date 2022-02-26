@@ -32,7 +32,7 @@ func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserControlle
 	uj.DELETE("", uc.DeleteByID())
 
 	r := e.Group("/rooms")
-	r.GET("", rc.GetAllRooms())
+	r.GET("/all", rc.GetAllRooms())
 	r.GET("/:id", rc.GetRoomByID())
 	r.GET("", rc.GetRoomsByUserID())
 	r.GET("", rc.GetRoomsByCity())

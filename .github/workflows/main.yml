@@ -17,9 +17,14 @@ jobs:
         port: ${{ secrets.PORT }}
         script: | 
           if [ -d "BE" ]; then
+            cd BE
             sudo docker-compose down --rmi all
+            cd
             rm -rf "BE"
           fi
           git clone https://github.com/airbnb-group-2/BE.git
+          ./salin.sh
           cd BE
           sudo docker-compose up --build -d
+          cd
+          

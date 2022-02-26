@@ -7,8 +7,8 @@ import (
 )
 
 type RequestImage struct {
-	Link   string `json:"link" form:"link"`
-	RoomID uint   `json:"room_id" form:"room_id"`
+	Link   string
+	RoomID uint `json:"room_id" form:"room_id"`
 }
 
 func (Req RequestImage) ToEntityImage() I.Images {

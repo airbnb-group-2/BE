@@ -41,3 +41,123 @@ func ToResponseCreateBook(Book B.Books) ResponseCreateBook {
 		PaymentMethodID:  Book.PaymentMethodID,
 	}
 }
+
+type ResponseSetPaid struct {
+	ID               uint      `json:"id"`
+	CheckInReserved  time.Time `json:"check_in_reserved"`
+	CheckOutReserved time.Time `json:"check_out_reserved"`
+	CheckInTime      time.Time `json:"check_in_time"`
+	CheckOutTime     time.Time `json:"check_out_time"`
+	Status           string    `json:"status"`
+	Phone            string    `json:"phone"`
+	UserID           uint      `json:"user_id"`
+	RoomID           uint      `json:"room_id"`
+	PaymentMethodID  uint      `json:"payment_method_id"`
+}
+
+func ToResponseSetPaid(Book B.Books) ResponseSetPaid {
+	return ResponseSetPaid{
+		ID:               Book.ID,
+		CheckInReserved:  Book.CheckInReserved,
+		CheckOutReserved: Book.CheckOutReserved,
+		CheckInTime:      Book.CheckInTime,
+		CheckOutTime:     Book.CheckOutTime,
+		Status:           Book.Status,
+		Phone:            Book.Phone,
+		UserID:           Book.UserID,
+		RoomID:           Book.RoomID,
+		PaymentMethodID:  Book.PaymentMethodID,
+	}
+}
+
+type ResponseSetCancel struct {
+	ID               uint      `json:"id"`
+	CheckInReserved  time.Time `json:"check_in_reserved"`
+	CheckOutReserved time.Time `json:"check_out_reserved"`
+	CheckInTime      time.Time `json:"check_in_time"`
+	CheckOutTime     time.Time `json:"check_out_time"`
+	Status           string    `json:"status"`
+	Phone            string    `json:"phone"`
+	UserID           uint      `json:"user_id"`
+	RoomID           uint      `json:"room_id"`
+	PaymentMethodID  uint      `json:"payment_method_id"`
+}
+
+func ToResponseSetCancel(Book B.Books) ResponseSetCancel {
+	return ResponseSetCancel{
+		ID:               Book.ID,
+		CheckInReserved:  Book.CheckInReserved,
+		CheckOutReserved: Book.CheckOutReserved,
+		CheckInTime:      Book.CheckInTime,
+		CheckOutTime:     Book.CheckOutTime,
+		Status:           Book.Status,
+		Phone:            Book.Phone,
+		UserID:           Book.UserID,
+		RoomID:           Book.RoomID,
+		PaymentMethodID:  Book.PaymentMethodID,
+	}
+}
+
+type RequestCheckInTime struct {
+	CheckInTime time.Time `json:"check_in_time"`
+}
+
+type ResponseCheckInTime struct {
+	ID               uint      `json:"id"`
+	CheckInReserved  time.Time `json:"check_in_reserved"`
+	CheckOutReserved time.Time `json:"check_out_reserved"`
+	CheckInTime      time.Time `json:"check_in_time"`
+	CheckOutTime     time.Time `json:"check_out_time"`
+	Status           string    `json:"status"`
+	Phone            string    `json:"phone"`
+	UserID           uint      `json:"user_id"`
+	RoomID           uint      `json:"room_id"`
+	PaymentMethodID  uint      `json:"payment_method_id"`
+}
+
+func ToResponseCheckInTime(Book B.Books) ResponseCheckInTime {
+	return ResponseCheckInTime{
+		ID:               Book.ID,
+		CheckInReserved:  Book.CheckInReserved,
+		CheckOutReserved: Book.CheckOutReserved,
+		CheckInTime:      Book.CheckInTime,
+		CheckOutTime:     Book.CheckOutTime,
+		Status:           Book.Status,
+		Phone:            Book.Phone,
+		UserID:           Book.UserID,
+		RoomID:           Book.RoomID,
+		PaymentMethodID:  Book.PaymentMethodID,
+	}
+}
+
+type RequestCheckOutTime struct {
+	CheckOutTime time.Time `json:"check_out_time"`
+}
+
+type ResponseCheckOutTime struct {
+	ID               uint      `json:"id"`
+	CheckInReserved  time.Time `json:"check_in_reserved"`
+	CheckOutReserved time.Time `json:"check_out_reserved"`
+	CheckInTime      time.Time `json:"check_in_time"`
+	CheckOutTime     time.Time `json:"check_out_time"`
+	Status           string    `json:"status"`
+	Phone            string    `json:"phone"`
+	UserID           uint      `json:"user_id"`
+	RoomID           uint      `json:"room_id"`
+	PaymentMethodID  uint      `json:"payment_method_id"`
+}
+
+func ToResponseCheckOutTime(Book B.Books) ResponseCheckOutTime {
+	return ResponseCheckOutTime{
+		ID:               Book.ID,
+		CheckInReserved:  Book.CheckInReserved,
+		CheckOutReserved: Book.CheckOutReserved,
+		CheckInTime:      Book.CheckInTime,
+		CheckOutTime:     Book.CheckOutTime,
+		Status:           Book.Status,
+		Phone:            Book.Phone,
+		UserID:           Book.UserID,
+		RoomID:           Book.RoomID,
+		PaymentMethodID:  Book.PaymentMethodID,
+	}
+}

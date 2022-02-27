@@ -1,10 +1,12 @@
 package book
 
 import (
+	"fmt"
 	"group-project2/deliveries/controllers/common"
 	"group-project2/deliveries/middlewares"
 	_B "group-project2/repositories/book"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/labstack/echo/v4"
@@ -58,5 +60,71 @@ func (ctl *BookController) GetBookHistoryByUserID() echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
 		return c.JSON(http.StatusCreated, common.Success(http.StatusCreated, "sukses mendapatkan history user", res))
+	}
+}
+
+func (ctl *BookController) SetPaid() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		BookID, _ := strconv.Atoi(c.Param("id"))
+		UserID := middlewares.ExtractTokenUserID(c)
+
+		res, err := ctl.repo.SetPaid(uint(BookID))
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+		}
+		fmt.Println("user_id:", UserID, "sudah membayar")
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengupdate room", ToResponseSetPaid(res)))
+	}
+}
+
+func (ctl *BookController) SetCancel() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		BookID, _ := strconv.Atoi(c.Param("id"))
+		UserID := middlewares.ExtractTokenUserID(c)
+
+		res, err := ctl.repo.SetCancel(uint(BookID))
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+		}
+		fmt.Println("user_id:", UserID, "batal booking")
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengupdate room", ToResponseSetCancel(res)))
+	}
+}
+
+func (ctl *BookController) SetCheckInTime() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		BookID, _ := strconv.Atoi(c.Param("id"))
+		UserID := middlewares.ExtractTokenUserID(c)
+
+		CheckInTime := RequestCheckInTime{}
+		if err := c.Bind(&CheckInTime); err != nil {
+			return c.JSON(http.StatusBadRequest, common.BadRequest("input dari client tidak sesuai"))
+		}
+
+		res, err := ctl.repo.SetCheckInTime(uint(BookID), CheckInTime.CheckInTime)
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+		}
+		fmt.Println("user_id:", UserID, "melakukan check in")
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengupdate room", ToResponseCheckInTime(res)))
+	}
+}
+
+func (ctl *BookController) SetCheckOutTime() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		BookID, _ := strconv.Atoi(c.Param("id"))
+		UserID := middlewares.ExtractTokenUserID(c)
+
+		CheckOutTime := RequestCheckOutTime{}
+		if err := c.Bind(&CheckOutTime); err != nil {
+			return c.JSON(http.StatusBadRequest, common.BadRequest("input dari client tidak sesuai"))
+		}
+
+		res, err := ctl.repo.SetCheckInTime(uint(BookID), CheckOutTime.CheckOutTime)
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+		}
+		fmt.Println("user_id:", UserID, "melakukan check out")
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengupdate room", ToResponseCheckOutTime(res)))
 	}
 }

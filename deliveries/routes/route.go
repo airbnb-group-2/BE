@@ -2,7 +2,9 @@ package routes
 
 import (
 	"group-project2/deliveries/controllers/auth"
+	"group-project2/deliveries/controllers/book"
 	"group-project2/deliveries/controllers/image"
+	paymentmethod "group-project2/deliveries/controllers/payment-method"
 	"group-project2/deliveries/controllers/rating"
 	"group-project2/deliveries/controllers/room"
 	"group-project2/deliveries/controllers/user"
@@ -12,7 +14,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserController, rc *room.RoomController, ic *image.ImageController, rtc *rating.RatingController) {
+func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserController, rc *room.RoomController, ic *image.ImageController, rtc *rating.RatingController, pmc *paymentmethod.PaymentMethodController, bc *book.BookController) {
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.CORS())
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
@@ -55,4 +57,21 @@ func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserControlle
 	rt := e.Group("/ratings")
 	rt.GET("", rtc.GetRatingsByRoomID())
 	rt.POST("", rtc.Insert(), middlewares.JWTMiddleware())
+
+	pm := e.Group("/payment-methods")
+	pm.GET("", pmc.Get())
+	pmj := pm.Group("/jwt")
+	pmj.Use(middlewares.JWTMiddleware())
+	pmj.POST("", pmc.Insert())
+	pmj.DELETE("", pmc.Delete())
+
+	b := e.Group("/books")
+	b.Use(middlewares.JWTMiddleware())
+	b.POST("", bc.Insert())
+	b.GET("/user-books", bc.GetAllBooksByUserID())
+	b.GET("/user-histories", bc.GetBookHistoryByUserID())
+	b.PUT("/set-paid/:id", bc.SetPaid())
+	b.PUT("/set-cancel/:id", bc.SetCancel())
+	b.PUT("/set-checkin/:id", bc.SetCheckInTime())
+	b.PUT("/set-checkout/:id", bc.SetCheckOutTime())
 }

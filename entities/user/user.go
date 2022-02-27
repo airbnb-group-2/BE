@@ -1,6 +1,7 @@
 package user
 
 import (
+	"group-project2/entities/book"
 	"group-project2/entities/rating"
 	"group-project2/entities/room"
 
@@ -15,4 +16,5 @@ type Users struct {
 	IsRenter bool             `gorm:"type:boolean;default:false"`
 	Rooms    []room.Rooms     `gorm:"foreignKey:UserID"`
 	Ratings  []rating.Ratings `gorm:"foreignKey:UserID"`
+	Books    []book.Books     `gorm:"foreignKey:UserID"`
 }

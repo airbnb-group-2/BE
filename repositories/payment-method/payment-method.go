@@ -35,7 +35,7 @@ func (repo *PaymentMethodRepository) Get() ([]P.PaymentMethods, error) {
 	return paymentMethods, nil
 }
 
-func (ur *PaymentMethodRepository) Delete(ID int) error {
+func (ur *PaymentMethodRepository) Delete(ID uint) error {
 	paymentMethod := P.PaymentMethods{}
 	if RowsAffected := ur.db.Delete(&paymentMethod, ID).RowsAffected; RowsAffected == 0 {
 		return errors.New("tidak ada payment method yang dihapus")

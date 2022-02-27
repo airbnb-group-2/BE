@@ -7,8 +7,8 @@ import (
 
 type Book interface {
 	Insert(NewBook B.Books) (B.Books, error)
-	GetAllBooksByUserID(UserID uint) ([]B.Books, error)
-	GetBookHistoryByUserID(UserID uint) ([]B.Books, error)
+	GetAllBooksByUserID(UserID uint) ([]JoinBooks, error)
+	GetBookHistoryByUserID(UserID uint) ([]JoinBooks, error)
 	SetPaid(BookID uint) (B.Books, error)
 	SetCancel(BookID uint) (B.Books, error)
 	SetCheckInTime(BookID uint, CheckInTime time.Time) (B.Books, error)

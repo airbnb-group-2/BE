@@ -26,6 +26,22 @@ func (ur *BookRepository) Insert(NewBook B.Books) (B.Books, error) {
 	return NewBook, nil
 }
 
+func (repo *BookRepository) GetAllBooksByUserID(UserID uint) ([]B.Books, error) {
+	Books := []B.Books{}
+	if RowsAffected := repo.db.Table("books").Where("user_id = ? AND status = ?", UserID, "booked").Find(&Books).RowsAffected; RowsAffected == 0 {
+		return nil, errors.New("user belum membuat booking sama sekali")
+	}
+	return Books, nil
+}
+
+func (repo *BookRepository) GetBookHistoryByUserID(UserID uint) ([]B.Books, error) {
+	Books := []B.Books{}
+	if RowsAffected := repo.db.Table("books").Where("user_id = ?", UserID).Find(&Books).RowsAffected; RowsAffected == 0 {
+		return nil, errors.New("user belum memiliki history booking")
+	}
+	return Books, nil
+}
+
 func (repo *BookRepository) SetPaid(BookID uint) (B.Books, error) {
 	Book := B.Books{}
 	if RowsAffected := repo.db.Table("books").Where("id = ?", BookID).Update("status", "paid").RowsAffected; RowsAffected == 0 {

@@ -8,7 +8,7 @@ import (
 
 type Books struct {
 	gorm.Model
-	Status          string `gorm:"type:enum(book,paid,cancel)"`
+	Status          string `gorm:"type:enum(booked,paid,cancel)"`
 	Phone           string `gorm:"type:varchar(14)"`
 	CheckIn         time.Time
 	CheckOut        time.Time

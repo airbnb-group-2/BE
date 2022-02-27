@@ -43,16 +43,16 @@ func ToResponseCreateBook(Book B.Books) ResponseCreateBook {
 }
 
 type ResponseSetPaid struct {
-	ID               uint      `json:"id"`
-	CheckInReserved  time.Time `json:"check_in_reserved"`
-	CheckOutReserved time.Time `json:"check_out_reserved"`
-	CheckInTime      time.Time `json:"check_in_time"`
-	CheckOutTime     time.Time `json:"check_out_time"`
-	Status           string    `json:"status"`
-	Phone            string    `json:"phone"`
-	UserID           uint      `json:"user_id"`
-	RoomID           uint      `json:"room_id"`
-	PaymentMethodID  uint      `json:"payment_method_id"`
+	ID               uint       `json:"id"`
+	CheckInReserved  time.Time  `json:"check_in_reserved"`
+	CheckOutReserved time.Time  `json:"check_out_reserved"`
+	CheckInTime      *time.Time `json:"check_in_time"`
+	CheckOutTime     *time.Time `json:"check_out_time"`
+	Status           string     `json:"status"`
+	Phone            string     `json:"phone"`
+	UserID           uint       `json:"user_id"`
+	RoomID           uint       `json:"room_id"`
+	PaymentMethodID  uint       `json:"payment_method_id"`
 }
 
 func ToResponseSetPaid(Book B.Books) ResponseSetPaid {
@@ -71,16 +71,16 @@ func ToResponseSetPaid(Book B.Books) ResponseSetPaid {
 }
 
 type ResponseSetCancel struct {
-	ID               uint      `json:"id"`
-	CheckInReserved  time.Time `json:"check_in_reserved"`
-	CheckOutReserved time.Time `json:"check_out_reserved"`
-	CheckInTime      time.Time `json:"check_in_time"`
-	CheckOutTime     time.Time `json:"check_out_time"`
-	Status           string    `json:"status"`
-	Phone            string    `json:"phone"`
-	UserID           uint      `json:"user_id"`
-	RoomID           uint      `json:"room_id"`
-	PaymentMethodID  uint      `json:"payment_method_id"`
+	ID               uint       `json:"id"`
+	CheckInReserved  time.Time  `json:"check_in_reserved"`
+	CheckOutReserved time.Time  `json:"check_out_reserved"`
+	CheckInTime      *time.Time `json:"check_in_time"`
+	CheckOutTime     *time.Time `json:"check_out_time"`
+	Status           string     `json:"status"`
+	Phone            string     `json:"phone"`
+	UserID           uint       `json:"user_id"`
+	RoomID           uint       `json:"room_id"`
+	PaymentMethodID  uint       `json:"payment_method_id"`
 }
 
 func ToResponseSetCancel(Book B.Books) ResponseSetCancel {
@@ -103,16 +103,16 @@ type RequestCheckInTime struct {
 }
 
 type ResponseCheckInTime struct {
-	ID               uint      `json:"id"`
-	CheckInReserved  time.Time `json:"check_in_reserved"`
-	CheckOutReserved time.Time `json:"check_out_reserved"`
-	CheckInTime      time.Time `json:"check_in_time"`
-	CheckOutTime     time.Time `json:"check_out_time"`
-	Status           string    `json:"status"`
-	Phone            string    `json:"phone"`
-	UserID           uint      `json:"user_id"`
-	RoomID           uint      `json:"room_id"`
-	PaymentMethodID  uint      `json:"payment_method_id"`
+	ID               uint       `json:"id"`
+	CheckInReserved  time.Time  `json:"check_in_reserved"`
+	CheckOutReserved time.Time  `json:"check_out_reserved"`
+	CheckInTime      *time.Time `json:"check_in_time"`
+	CheckOutTime     *time.Time `json:"check_out_time"`
+	Status           string     `json:"status"`
+	Phone            string     `json:"phone"`
+	UserID           uint       `json:"user_id"`
+	RoomID           uint       `json:"room_id"`
+	PaymentMethodID  uint       `json:"payment_method_id"`
 }
 
 func ToResponseCheckInTime(Book B.Books) ResponseCheckInTime {
@@ -135,16 +135,16 @@ type RequestCheckOutTime struct {
 }
 
 type ResponseCheckOutTime struct {
-	ID               uint      `json:"id"`
-	CheckInReserved  time.Time `json:"check_in_reserved"`
-	CheckOutReserved time.Time `json:"check_out_reserved"`
-	CheckInTime      time.Time `json:"check_in_time"`
-	CheckOutTime     time.Time `json:"check_out_time"`
-	Status           string    `json:"status"`
-	Phone            string    `json:"phone"`
-	UserID           uint      `json:"user_id"`
-	RoomID           uint      `json:"room_id"`
-	PaymentMethodID  uint      `json:"payment_method_id"`
+	ID               uint       `json:"id"`
+	CheckInReserved  time.Time  `json:"check_in_reserved"`
+	CheckOutReserved time.Time  `json:"check_out_reserved"`
+	CheckInTime      *time.Time `json:"check_in_time"`
+	CheckOutTime     *time.Time `json:"check_out_time"`
+	Status           string     `json:"status"`
+	Phone            string     `json:"phone"`
+	UserID           uint       `json:"user_id"`
+	RoomID           uint       `json:"room_id"`
+	PaymentMethodID  uint       `json:"payment_method_id"`
 }
 
 func ToResponseCheckOutTime(Book B.Books) ResponseCheckOutTime {

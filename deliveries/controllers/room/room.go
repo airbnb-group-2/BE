@@ -120,7 +120,7 @@ func (ctl *RoomController) Delete() echo.HandlerFunc {
 
 		RoomID, _ := strconv.Atoi(c.Param("id"))
 
-		err := ctl.repo.Delete(uint(UserID), uint(RoomID))
+		err := ctl.repo.Delete(uint(RoomID), uint(UserID))
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}

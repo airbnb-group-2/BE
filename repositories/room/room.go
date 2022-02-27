@@ -69,8 +69,8 @@ func (repo *RoomRepository) Update(RoomUpdate R.Rooms) (R.Rooms, error) {
 	return RoomUpdate, nil
 }
 
-func (repo *RoomRepository) Delete(UserID, RoomID uint) error {
-	if RowsAffected := repo.db.Table("room").Where("user_id = ? AND room_id = ?", UserID, RoomID).Delete(&R.Rooms{}, RoomID).RowsAffected; RowsAffected == 0 {
+func (repo *RoomRepository) Delete(RoomID, UserID uint) error {
+	if RowsAffected := repo.db.Table("rooms").Where("id = ? AND user_id = ?", RoomID, UserID).Delete(&R.Rooms{}, RoomID).RowsAffected; RowsAffected == 0 {
 		return errors.New("tidak ada room yang dihapus")
 	}
 	return nil

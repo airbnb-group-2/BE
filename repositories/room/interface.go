@@ -9,5 +9,5 @@ type Room interface {
 	GetRoomsByUserID(UserID uint) ([]R.Rooms, error)
 	GetRoomsByCity(City string) ([]R.Rooms, error)
 	Update(RoomUpdate R.Rooms) (R.Rooms, error)
-	Delete(UserID, RoomID uint) error
+	Delete(RoomID, UserID uint) error
 }

@@ -55,6 +55,30 @@ func Upload(ctl *ImageController, c echo.Context) (string, error) {
 	return link, nil
 }
 
+// func Delete(ctl *ImageController, c echo.Context) (string, error) {
+// 	imageUpload := RequestImage{}
+// 	if err := c.Bind(&imageUpload); err != nil || imageUpload.RoomID == 0 {
+// 		log.Info(errors.New("input dari client tidak sesuai, room_id tidak boleh kosong"))
+// 		return "", err
+// 	}
+
+// 	file, err := c.FormFile("file")
+// 	if err != nil {
+// 		log.Info(err)
+// 		return "", err
+// 	}
+
+// 	file.Filename = fmt.Sprintf("room%s-%s", strconv.Itoa(int(imageUpload.RoomID)), file.Filename)
+
+// 	link, err := awss3.DoUpload(ctl.awsSess, *file, ctl.awsConf.S3_REGION)
+// 	if err != nil {
+// 		log.Info(err)
+// 		return "", err
+// 	}
+
+// 	return link, nil
+// }
+
 func (ctl *ImageController) Insert() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		IsRenter := middlewares.ExtractTokenIsRenter(c)
@@ -133,6 +157,12 @@ func (ctl *ImageController) DeleteImageByID() echo.HandlerFunc {
 		if !IsRenter {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("client tidak terautorisasi, hanya renter yang diizinkan untuk menambahkan gambar"))
 		}
+
+		// res, _ := ctl.repo.GetImageByID(uint(ImageID))
+
+		// link := ToResponseGetImageByID(res).Link
+		// pattern, _ := regexp.Compile(`(?:[^/][\d\w\.]+)$(?<=\.\w{3,4})`)
+		// fileName := pattern.FindString(link)
 
 		err := ctl.repo.DeleteImageByID(uint(ImageID))
 		if err != nil {

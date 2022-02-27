@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	"group-project2/configs"
+	"os"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -10,6 +10,6 @@ import (
 func JWTMiddleware() echo.MiddlewareFunc {
 	return middleware.JWTWithConfig(middleware.JWTConfig{
 		SigningMethod: "HS256",
-		SigningKey:    []byte(configs.JWT_SECRET),
+		SigningKey:    []byte(os.Getenv("JWT_SECRET")),
 	})
 }

@@ -32,7 +32,7 @@ func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserControlle
 	uj.DELETE("", uc.DeleteByID())
 
 	r := e.Group("/rooms")
-	r.GET("", rc.GetAllRooms())
+	r.GET("/all", rc.GetAllRooms())
 	r.GET("/:id", rc.GetRoomByID())
 	r.GET("", rc.GetRoomsByUserID())
 	r.GET("", rc.GetRoomsByCity())
@@ -48,9 +48,9 @@ func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserControlle
 	ij := i.Group("/jwt")
 	ij.Use(middlewares.JWTMiddleware())
 	ij.POST("", ic.Insert())
-	ij.PUT("", ic.Update())
+	ij.PUT("/:id", ic.Update())
 	ij.DELETE("/:id", ic.DeleteImageByID())
-	ij.DELETE("", ic.DeleteImageByRoomID())
+	ij.DELETE("/delete", ic.DeleteImageByRoomID())
 
 	rt := e.Group("/ratings")
 	rt.GET("", rtc.GetRatingsByRoomID())

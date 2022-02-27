@@ -2,7 +2,7 @@ package middlewares
 
 import (
 	"errors"
-	"group-project2/configs"
+	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -19,7 +19,7 @@ func GenerateToken(ID uint, isRenter bool) (string, error) {
 	data["expired"] = time.Now().Add(time.Hour * 1).Unix()
 	data["authorized"] = true
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, data)
-	return token.SignedString([]byte(configs.JWT_SECRET))
+	return token.SignedString([]byte(os.Getenv("JWT_SECRET")))
 }
 
 func ExtractTokenUserID(e echo.Context) int {

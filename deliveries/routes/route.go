@@ -50,7 +50,7 @@ func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserControlle
 	ij.POST("", ic.Insert())
 	ij.PUT("/:id", ic.Update())
 	ij.DELETE("/:id", ic.DeleteImageByID())
-	ij.DELETE("", ic.DeleteImageByRoomID())
+	ij.DELETE("/delete", ic.DeleteImageByRoomID())
 
 	rt := e.Group("/ratings")
 	rt.GET("", rtc.GetRatingsByRoomID())

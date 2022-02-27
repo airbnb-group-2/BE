@@ -47,7 +47,7 @@ func (ctl *BookController) GetAllBooksByUserID() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
-		return c.JSON(http.StatusCreated, common.Success(http.StatusCreated, "sukses mendapatkan semua booking", res))
+		return c.JSON(http.StatusCreated, common.Success(http.StatusCreated, "sukses mendapatkan semua booking", ToResponseGet(res)))
 	}
 }
 
@@ -59,7 +59,7 @@ func (ctl *BookController) GetBookHistoryByUserID() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
-		return c.JSON(http.StatusCreated, common.Success(http.StatusCreated, "sukses mendapatkan history user", res))
+		return c.JSON(http.StatusCreated, common.Success(http.StatusCreated, "sukses mendapatkan history user", ToResponseGet(res)))
 	}
 }
 

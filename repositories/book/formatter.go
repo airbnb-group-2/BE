@@ -11,8 +11,8 @@ type JoinBooks struct {
 	PaymentMethodName string
 	CheckInReserved   time.Time
 	CheckOutReserved  time.Time
-	CheckInTime       time.Time
-	CheckOutTime      time.Time
+	CheckInTime       *time.Time
+	CheckOutTime      *time.Time
 	Status            string
 	Phone             string
 }

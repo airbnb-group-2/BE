@@ -2,6 +2,7 @@ package book
 
 import (
 	B "group-project2/entities/book"
+	"group-project2/repositories/book"
 	"time"
 )
 
@@ -160,4 +161,40 @@ func ToResponseCheckOutTime(Book B.Books) ResponseCheckOutTime {
 		RoomID:           Book.RoomID,
 		PaymentMethodID:  Book.PaymentMethodID,
 	}
+}
+
+type ResponseGet struct {
+	BookID            uint       `json:"book_id"`
+	UserID            uint       `json:"user_id"`
+	RoomID            uint       `json:"room_id"`
+	RoomName          string     `json:"room_name"`
+	PaymentMethodID   uint       `json:"payment_method_id"`
+	PaymentMethodName string     `json:"payment_method_name"`
+	CheckInReserved   time.Time  `json:"check_in_reserved"`
+	CheckOutReserved  time.Time  `json:"check_out_reserved"`
+	CheckInTime       *time.Time `json:"check_in_time"`
+	CheckOutTime      *time.Time `json:"check_out_time"`
+	Status            string     `json:"status"`
+	Phone             string     `json:"phone"`
+}
+
+func ToResponseGet(Books []book.JoinBooks) []ResponseGet {
+	Responses := make([]ResponseGet, len(Books))
+
+	for i := 0; i < len(Books); i++ {
+		Responses[i].BookID = Books[i].BookID
+		Responses[i].UserID = Books[i].UserID
+		Responses[i].RoomID = Books[i].RoomID
+		Responses[i].RoomName = Books[i].RoomName
+		Responses[i].PaymentMethodID = Books[i].PaymentMethodID
+		Responses[i].PaymentMethodName = Books[i].PaymentMethodName
+		Responses[i].CheckInReserved = Books[i].CheckInReserved
+		Responses[i].CheckOutReserved = Books[i].CheckOutReserved
+		Responses[i].CheckInTime = Books[i].CheckInTime
+		Responses[i].CheckOutTime = Books[i].CheckOutTime
+		Responses[i].Status = Books[i].Status
+		Responses[i].Phone = Books[i].Phone
+	}
+
+	return Responses
 }

@@ -63,7 +63,7 @@ func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserControlle
 	pmj := pm.Group("/jwt")
 	pmj.Use(middlewares.JWTMiddleware())
 	pmj.POST("", pmc.Insert())
-	pmj.DELETE("", pmc.Delete())
+	pmj.DELETE("/:id", pmc.Delete())
 
 	b := e.Group("/books")
 	b.Use(middlewares.JWTMiddleware())

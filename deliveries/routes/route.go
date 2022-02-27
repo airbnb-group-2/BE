@@ -48,7 +48,7 @@ func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserControlle
 	ij := i.Group("/jwt")
 	ij.Use(middlewares.JWTMiddleware())
 	ij.POST("", ic.Insert())
-	ij.PUT("", ic.Update())
+	ij.PUT("/:id", ic.Update())
 	ij.DELETE("/:id", ic.DeleteImageByID())
 	ij.DELETE("", ic.DeleteImageByRoomID())
 

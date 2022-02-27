@@ -8,6 +8,6 @@ import (
 
 type PaymentMethods struct {
 	gorm.Model
-	Name  string       `gorm:"type:varchar(100)"`
+	Name  string       `gorm:"type:varchar(100);unique"`
 	Books []book.Books `gorm:"foreignKey:PaymentMethodID"`
 }

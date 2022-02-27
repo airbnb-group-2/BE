@@ -23,6 +23,7 @@ func (repo *PaymentMethodRepository) Insert(NewPaymentMethod P.PaymentMethods) (
 		log.Warn(err)
 		return P.PaymentMethods{}, err
 	}
+	repo.db.Table("payment_methods").Where("name = ?", NewPaymentMethod.Name).First(&NewPaymentMethod)
 	return NewPaymentMethod, nil
 }
 

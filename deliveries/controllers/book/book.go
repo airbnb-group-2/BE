@@ -73,7 +73,7 @@ func (ctl *BookController) SetPaid() echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
 		fmt.Println("user_id:", UserID, "sudah membayar")
-		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengupdate room", ToResponseSetPaid(res)))
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengubah status booking menjadi paid", ToResponseSetPaid(res)))
 	}
 }
 
@@ -87,7 +87,7 @@ func (ctl *BookController) SetCancel() echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
 		fmt.Println("user_id:", UserID, "batal booking")
-		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengupdate room", ToResponseSetCancel(res)))
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengubah status booking menjadi cancel", ToResponseSetCancel(res)))
 	}
 }
 
@@ -106,7 +106,7 @@ func (ctl *BookController) SetCheckInTime() echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
 		fmt.Println("user_id:", UserID, "melakukan check in")
-		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengupdate room", ToResponseCheckInTime(res)))
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses menyetel check_in_time", ToResponseCheckInTime(res)))
 	}
 }
 
@@ -125,6 +125,6 @@ func (ctl *BookController) SetCheckOutTime() echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
 		fmt.Println("user_id:", UserID, "melakukan check out")
-		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengupdate room", ToResponseCheckOutTime(res)))
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses menyetel check_out_time", ToResponseCheckOutTime(res)))
 	}
 }

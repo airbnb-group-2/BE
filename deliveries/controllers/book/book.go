@@ -63,6 +63,18 @@ func (ctl *BookController) GetBookHistoryByUserID() echo.HandlerFunc {
 	}
 }
 
+func (ctl *BookController) IsAvailable() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		Checker := RequestIsAvailable{}
+		if err := c.Bind(&Checker); err != nil {
+			return c.JSON(http.StatusBadRequest, common.BadRequest("input dari client tidak sesuai"))
+		}
+
+		res := ctl.repo.IsAvailable(uint(Checker.RoomID), Checker.CheckInReserved, Checker.CheckOutReserved)
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengecek ketersediaan room", res))
+	}
+}
+
 func (ctl *BookController) SetPaid() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		BookID, _ := strconv.Atoi(c.Param("id"))

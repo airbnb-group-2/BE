@@ -48,6 +48,16 @@ func (repo *BookRepository) GetBookHistoryByUserID(UserID uint) ([]JoinBooks, er
 	return Books, nil
 }
 
+func (repo *BookRepository) IsAvailable(RoomID uint, CheckInReserved, CheckOutReserved time.Time) bool {
+	Book := B.Books{}
+	if RowsAffected := repo.db.Table("books").
+		Where("room_id = ? AND status <> ?", RoomID, "cancel").
+		Where("check_in_reserved BETWEEN ? AND ? OR check_out_reserved BETWEEN ? AND ?", CheckInReserved, CheckOutReserved, CheckInReserved, CheckOutReserved).First(&Book).RowsAffected; RowsAffected == 0 {
+		return true
+	}
+	return false
+}
+
 func (repo *BookRepository) SetPaid(BookID uint) (B.Books, error) {
 	Book := B.Books{}
 	if RowsAffected := repo.db.Table("books").Where("id = ?", BookID).Update("status", "paid").RowsAffected; RowsAffected == 0 {

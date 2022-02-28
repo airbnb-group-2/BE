@@ -120,7 +120,7 @@ func (ctl *BookController) SetCheckOutTime() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, common.BadRequest("input dari client tidak sesuai"))
 		}
 
-		res, err := ctl.repo.SetCheckInTime(uint(BookID), CheckOutTime.CheckOutTime)
+		res, err := ctl.repo.SetCheckOutTime(uint(BookID), CheckOutTime.CheckOutTime)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}

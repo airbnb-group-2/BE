@@ -41,8 +41,8 @@ func (repo *BookRepository) GetBookHistoryByUserID(UserID uint) ([]JoinBooks, er
 	Books := []JoinBooks{}
 	if RowsAffected := repo.db.
 		Select("books.id AS BookID, books.user_id AS UserID, books.room_id AS RoomID, rooms.name as RoomName, books.payment_method_id AS PaymentMethodID, payment_methods.name AS PaymentMethodName, books.check_in_reserved AS CheckInReserved, books.check_out_reserved AS CheckOutReserved, books.check_in_time AS CheckInTime, books.check_out_time AS CheckOutTime, books.status AS Status, books.phone AS Phone").
-		Joins("JOIN books ON books.room_id = rooms.id AND books.user_id = ?", UserID).
-		Joins("JOIN books ON books.payment_method_id = payment_methods.id").Find(&Books).RowsAffected; RowsAffected == 0 {
+		Joins("JOIN rooms ON rooms.id = books.room_id AND books.user_id = ?", UserID).
+		Joins("JOIN payment_methods ON payment_methods.id = books.payment_method_id").Find(&Books).RowsAffected; RowsAffected == 0 {
 		return nil, errors.New("user belum membuat booking sama sekali")
 	}
 	return Books, nil

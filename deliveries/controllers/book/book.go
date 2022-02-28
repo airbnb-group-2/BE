@@ -5,6 +5,7 @@ import (
 	"group-project2/deliveries/controllers/common"
 	"group-project2/deliveries/middlewares"
 	_B "group-project2/repositories/book"
+	midtranspay "group-project2/services/midtrans-pay"
 	"net/http"
 	"strconv"
 	"strings"
@@ -35,6 +36,8 @@ func (ctl *BookController) Insert() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError("gagal membuat booking baru"))
 		}
+		midtransConn := midtranspay.InitConnection()
+		midtranspay.CreateTransaction(midtransConn)
 		return c.JSON(http.StatusCreated, common.Success(http.StatusCreated, "sukses menambahkan booking baru", ToResponseCreateBook(res)))
 	}
 }

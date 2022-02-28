@@ -70,6 +70,7 @@ func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserControlle
 	b.POST("", bc.Insert())
 	b.GET("/user-books", bc.GetAllBooksByUserID())
 	b.GET("/user-histories", bc.GetBookHistoryByUserID())
+	b.GET("/is-available", bc.IsAvailable())
 	b.PUT("/set-paid/:id", bc.SetPaid())
 	b.PUT("/set-cancel/:id", bc.SetCancel())
 	b.PUT("/set-checkin/:id", bc.SetCheckInTime())

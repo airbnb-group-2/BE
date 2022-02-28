@@ -17,6 +17,7 @@ type AppConfig struct {
 	DB_HOST     string
 	DB_USERNAME string
 	DB_PASSWORD string
+	DB_LOC      string
 	S3_REGION   string
 	S3_KEY      string
 	S3_SECRET   string
@@ -48,6 +49,7 @@ func initConfig() *AppConfig {
 		DB_HOST:     "",
 		DB_USERNAME: "",
 		DB_PASSWORD: "",
+		DB_LOC:      "",
 		S3_REGION:   "",
 		S3_KEY:      "",
 		S3_SECRET:   "",
@@ -78,6 +80,7 @@ func getEnv(appConfig *AppConfig) {
 	appConfig.DB_HOST = os.Getenv("DB_HOST")
 	appConfig.DB_USERNAME = os.Getenv("DB_USERNAME")
 	appConfig.DB_PASSWORD = os.Getenv("DB_PASSWORD")
+	appConfig.DB_LOC = os.Getenv("DB_LOC")
 	appConfig.S3_REGION = os.Getenv("S3-REGION")
 	appConfig.S3_KEY = os.Getenv("S3-KEY")
 	appConfig.S3_SECRET = os.Getenv("S3-SECRET")

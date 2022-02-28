@@ -67,7 +67,7 @@ func (ctl *BookController) IsAvailable() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		Checker := RequestIsAvailable{}
 		if err := c.Bind(&Checker); err != nil {
-			return c.JSON(http.StatusBadRequest, common.BadRequest("input dari client tidak sesuai"))
+			return c.JSON(http.StatusBadRequest, common.BadRequest("input dari client tidak sesuai, room_id, check_in_reserved atau check_out_reserved tidak boleh kosong"))
 		}
 
 		res := ctl.repo.IsAvailable(uint(Checker.RoomID), Checker.CheckInReserved, Checker.CheckOutReserved)

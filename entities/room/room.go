@@ -1,6 +1,7 @@
 package room
 
 import (
+	"group-project2/entities/book"
 	"group-project2/entities/image"
 	"group-project2/entities/rating"
 
@@ -23,5 +24,6 @@ type Rooms struct {
 	Price       uint             `gorm:"default:1"`
 	Images      []image.Images   `gorm:"foreignKey:RoomID"`
 	Ratings     []rating.Ratings `gorm:"foreignKey:RoomID"`
+	Books       []book.Books     `gorm:"foreignKey:RoomID"`
 	UserID      uint
 }

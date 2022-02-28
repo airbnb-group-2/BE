@@ -57,15 +57,13 @@ func ToResponseGetImageByID(Image I.Images) ResponseGetImage {
 }
 
 type RequestImageUpdate struct {
-	Link   string `json:"link" form:"link"`
-	RoomID uint   `json:"room_id" form:"room_id"`
+	Link string `json:"link" form:"link"`
 }
 
 func (Req RequestImageUpdate) ToEntityImage(ImageID uint) I.Images {
 	return I.Images{
-		Model:  gorm.Model{ID: ImageID},
-		Link:   "",
-		RoomID: 0,
+		Model: gorm.Model{ID: ImageID},
+		Link:  Req.Link,
 	}
 }
 

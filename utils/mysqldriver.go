@@ -3,7 +3,9 @@ package utils
 import (
 	"fmt"
 	"group-project2/configs"
+	B "group-project2/entities/book"
 	I "group-project2/entities/image"
+	PM "group-project2/entities/payment-method"
 	Rat "group-project2/entities/rating"
 	R "group-project2/entities/room"
 	U "group-project2/entities/user"
@@ -36,4 +38,6 @@ func InitMigrate(db *gorm.DB) {
 	db.AutoMigrate(&R.Rooms{})
 	db.AutoMigrate(&I.Images{})
 	db.AutoMigrate(&Rat.Ratings{})
+	db.AutoMigrate(&PM.PaymentMethods{})
+	db.AutoMigrate(&B.Books{})
 }

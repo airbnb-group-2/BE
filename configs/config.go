@@ -26,17 +26,17 @@ type AppConfig struct {
 var syncrhonizer = &sync.Mutex{}
 var appConfig *AppConfig
 
-func GetConfig() *AppConfig {
+func GetConfig(isTest bool) *AppConfig {
 	syncrhonizer.Lock()
 	defer syncrhonizer.Unlock()
 
 	if appConfig == nil {
-		appConfig = initConfig()
+		appConfig = initConfig(isTest)
 	}
 	return appConfig
 }
 
-func initConfig() *AppConfig {
+func initConfig(isTest bool) *AppConfig {
 	if err := godotenv.Load("local.env"); err != nil {
 		log.Info(err)
 	}
@@ -57,7 +57,11 @@ func initConfig() *AppConfig {
 
 	getEnv(&defaultAppConfig)
 
-	log.Info(defaultAppConfig)
+	if isTest {
+		defaultAppConfig.DB_NAME = "immersive6"
+	}
+
+	log.Info("connected to:\n", defaultAppConfig)
 
 	return &defaultAppConfig
 }
@@ -85,25 +89,3 @@ func getEnv(appConfig *AppConfig) {
 	appConfig.S3_KEY = os.Getenv("S3-KEY")
 	appConfig.S3_SECRET = os.Getenv("S3-SECRET")
 }
-
-// func initConfig() *AppConfig {
-// 	var defaultAppConfig AppConfig
-// 	defaultAppConfig.Port = 8000
-// 	defaultAppConfig.Driver = getEnv("DRIVER", "mysql")
-// 	defaultAppConfig.Name = getEnv("NAME", "test")
-// 	defaultAppConfig.Address = getEnv("ADDRESS", "localhost")
-// 	defaultAppConfig.DB_Port = 3306
-// 	defaultAppConfig.Username = getEnv("USERNAME", "admin")
-// 	defaultAppConfig.Password = getEnv("PASSWORD", "admin")
-
-// 	fmt.Println("connected to:", defaultAppConfig)
-
-// 	return &defaultAppConfig
-// }
-
-// func getEnv(key, fallback string) string {
-// 	if value, ok := os.LookupEnv(key); ok && value != "cakcup" {
-// 		return value
-// 	}
-// 	return fallback
-// }

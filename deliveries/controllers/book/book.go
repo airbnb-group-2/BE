@@ -5,6 +5,7 @@ import (
 	"group-project2/deliveries/controllers/common"
 	"group-project2/deliveries/middlewares"
 	_B "group-project2/repositories/book"
+	midtranspay "group-project2/services/midtrans-pay"
 	"net/http"
 	"strconv"
 	"strings"
@@ -22,6 +23,37 @@ func New(repository _B.Book) *BookController {
 	}
 }
 
+var (
+	midtransConn = midtranspay.InitConnection()
+)
+
+func (ctl *BookController) GetStatusID() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		BookID, _ := strconv.Atoi(c.Param("id"))
+		res, err := midtranspay.Notification(midtransConn, uint(BookID))
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+		}
+
+		if res == "status pending" {
+			return c.JSON(http.StatusOK, common.Success(http.StatusOK, "pembayaran tertunda", nil))
+		} else if res == "status settlement" {
+			res, err := ctl.repo.SetPaid(uint(BookID))
+			if err != nil {
+				return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+			}
+			return c.JSON(http.StatusOK, common.Success(http.StatusOK, "pembayaran sukses", ToResponseSetPaid(res)))
+		} else if res == "status cancel" {
+			res, err := ctl.repo.SetCancel(uint(BookID))
+			if err != nil {
+				return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+			}
+			return c.JSON(http.StatusOK, common.Success(http.StatusOK, "pembayaran gagal", ToResponseSetCancel(res)))
+		}
+		return c.JSON(http.StatusCreated, common.Success(http.StatusCreated, "status transaksi:", res))
+	}
+}
+
 func (ctl *BookController) Insert() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		UserID := middlewares.ExtractTokenUserID(c)
@@ -35,7 +67,9 @@ func (ctl *BookController) Insert() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError("gagal membuat booking baru"))
 		}
-		return c.JSON(http.StatusCreated, common.Success(http.StatusCreated, "sukses menambahkan booking baru", ToResponseCreateBook(res)))
+		trxResp := midtranspay.CreateTransaction(midtransConn, res.ID)
+		return c.JSON(http.StatusCreated, common.Success(http.StatusCreated, "sukses menambahkan booking baru", ToResponseCreateBook(res, trxResp)))
+		// return c.JSON(http.StatusCreated, common.Success(http.StatusCreated, "sukses menambahkan booking baru", res2))
 	}
 }
 
@@ -67,7 +101,7 @@ func (ctl *BookController) IsAvailable() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		Checker := RequestIsAvailable{}
 		if err := c.Bind(&Checker); err != nil {
-			return c.JSON(http.StatusBadRequest, common.BadRequest("input dari client tidak sesuai"))
+			return c.JSON(http.StatusBadRequest, common.BadRequest("input dari client tidak sesuai, room_id, check_in_reserved atau check_out_reserved tidak boleh kosong"))
 		}
 
 		res := ctl.repo.IsAvailable(uint(Checker.RoomID), Checker.CheckInReserved, Checker.CheckOutReserved)

@@ -204,3 +204,9 @@ func ToResponseGet(Books []book.JoinBooks) []ResponseGet {
 
 	return Responses
 }
+
+type RequestIsAvailable struct {
+	RoomID           uint      `json:"room_id"`
+	CheckInReserved  time.Time `json:"check_in_reserved"`
+	CheckOutReserved time.Time `json:"check_out_reserved"`
+}

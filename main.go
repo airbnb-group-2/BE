@@ -26,7 +26,7 @@ import (
 )
 
 func main() {
-	config := configs.GetConfig()
+	config := configs.GetConfig(false)
 	db := utils.InitDB(config)
 
 	authRepo := _AuthRepo.New(db)

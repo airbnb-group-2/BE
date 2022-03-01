@@ -16,6 +16,7 @@ func InitConnection() coreapi.Client {
 		log.Info(err)
 	}
 	MIDTRANS_KEY := os.Getenv("MIDTRANS_KEY")
+
 	client := coreapi.Client{}
 	client.New(MIDTRANS_KEY, midtrans.Sandbox)
 	return client

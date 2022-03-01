@@ -4,6 +4,8 @@ import (
 	B "group-project2/entities/book"
 	"group-project2/repositories/book"
 	"time"
+
+	"github.com/midtrans/midtrans-go/coreapi"
 )
 
 type RequestCreateBook struct {
@@ -26,20 +28,24 @@ func (Req RequestCreateBook) ToEntityBook(UserID uint) B.Books {
 }
 
 type ResponseCreateBook struct {
+	ID               uint      `json:"id"`
 	CheckInReserved  time.Time `json:"check_in_reserved"`
 	CheckOutReserved time.Time `json:"check_out_reserved"`
 	Phone            string    `json:"phone"`
 	RoomID           uint      `json:"room_id"`
 	PaymentMethodID  uint      `json:"payment_method_id"`
+	Link             string    `json:"link"`
 }
 
-func ToResponseCreateBook(Book B.Books) ResponseCreateBook {
+func ToResponseCreateBook(Book B.Books, c *coreapi.ChargeResponse) ResponseCreateBook {
 	return ResponseCreateBook{
+		ID:               Book.ID,
 		CheckInReserved:  Book.CheckInReserved,
 		CheckOutReserved: Book.CheckOutReserved,
 		Phone:            Book.Phone,
 		RoomID:           Book.RoomID,
 		PaymentMethodID:  Book.PaymentMethodID,
+		Link:             c.RedirectURL,
 	}
 }
 

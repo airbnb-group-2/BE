@@ -68,10 +68,14 @@ func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserControlle
 	b := e.Group("/books")
 	b.Use(middlewares.JWTMiddleware())
 	b.POST("", bc.Insert())
+	b.GET("/check-status/:id", bc.GetStatusID())
 	b.GET("/user-books", bc.GetAllBooksByUserID())
 	b.GET("/user-histories", bc.GetBookHistoryByUserID())
 	b.PUT("/set-paid/:id", bc.SetPaid())
 	b.PUT("/set-cancel/:id", bc.SetCancel())
 	b.PUT("/set-checkin/:id", bc.SetCheckInTime())
 	b.PUT("/set-checkout/:id", bc.SetCheckOutTime())
+
+	// m := e.Group("/midtrans")
+	// m.GET("", midtranspay.Notification())
 }

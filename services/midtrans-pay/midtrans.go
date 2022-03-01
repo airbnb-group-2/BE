@@ -5,16 +5,18 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/joho/godotenv"
 	"github.com/labstack/gommon/log"
 	"github.com/midtrans/midtrans-go"
 	"github.com/midtrans/midtrans-go/coreapi"
 )
 
-var (
-	MIDTRANS_KEY = os.Getenv("MIDTRANS_KEY")
-)
-
 func InitConnection() coreapi.Client {
+	if err := godotenv.Load("local.env"); err != nil {
+		log.Info(err)
+	}
+	MIDTRANS_KEY := os.Getenv("MIDTRANS_KEY")
+	fmt.Println("Midtrans key:", MIDTRANS_KEY)
 	client := coreapi.Client{}
 	client.New(MIDTRANS_KEY, midtrans.Sandbox)
 	return client

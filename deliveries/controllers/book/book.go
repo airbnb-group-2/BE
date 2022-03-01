@@ -35,7 +35,9 @@ func (ctl *BookController) GetStatusID() echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
 
-		if res == "status settlement" {
+		if res == "status pending" {
+			return c.JSON(http.StatusOK, common.Success(http.StatusOK, "pembayaran tertunda", nil))
+		} else if res == "status settlement" {
 			res, err := ctl.repo.SetPaid(uint(BookID))
 			if err != nil {
 				return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
@@ -47,10 +49,7 @@ func (ctl *BookController) GetStatusID() echo.HandlerFunc {
 				return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 			}
 			return c.JSON(http.StatusOK, common.Success(http.StatusOK, "pembayaran gagal", ToResponseSetCancel(res)))
-		} else if res == "status pending" {
-			return c.JSON(http.StatusOK, common.Success(http.StatusOK, "pembayaran tertunda", nil))
 		}
-
 		return c.JSON(http.StatusCreated, common.Success(http.StatusCreated, "status transaksi:", res))
 	}
 }
